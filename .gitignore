@@ -1,0 +1,17 @@
+# Quartus generated folders
+db/
+incremental_db/
+output_files/
+
+# Quartus generated files
+*.qdb
+*.qws
+*.bak
+*.log
+*.rpt
+*.cmp
+*.sof
+*.pof
+*.pin
+top_description.txt
+c5_pin_model_dump.txt
