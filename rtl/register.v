@@ -6,7 +6,7 @@ input clk, load;
 input [15:0] vecin;
 output [15:0] vecout;
 
-reg vecout;
+reg [15:0] vecout;
 
 always @(posedge clk)
 	if (load)
