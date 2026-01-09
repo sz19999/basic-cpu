@@ -49,7 +49,6 @@ always @(*) begin
 	if(run && resetn)
 		// fetch
 		if (counter == 2'b00) begin
-			DINout = 1'b1;  // Bus <- Din
 			IRin   = 1'b1;  // IR  <- Bus
 			end
 		// decode + execute	
@@ -128,6 +127,7 @@ always @(*) begin
 							end
 					endcase
 			endcase
-end
+		end
+	end
 
 endmodule
