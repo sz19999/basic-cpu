@@ -48,9 +48,9 @@ always @(*) begin
 	
 	if(run && resetn)
 		// fetch
-		if (counter == 2'b00) begin
-			IRin   = 1'b1;  // IR  <- Bus
-			end
+		if (counter == 2'b00)
+			IRin   = 1'b1;  // IR  <- Din
+			
 		// decode + execute	
 		else begin
 			case(opcode)
