@@ -35,7 +35,7 @@ assign      y = IR[2:0];
 
 always @(*) begin
 	// defaults outputs
-   Rout   = 3'b000;
+   Rout   = 8'b0000_0000;
 	Rin    = 8'b0000_0000;
 	Ain    = 1'b0;
    Gin    = 1'b0;
@@ -65,7 +65,7 @@ always @(*) begin
 					case(counter)
 						2'b01:
 							begin
-								Rout = y;	 			// Bus <- y (forward to mux for handling)
+								Rout = (8'b1 << y);	// Bus <- y (forward to mux for handling)
 								Rin  = (8'b1 << Rx);	// Rx  <- Bus
 							end
 						2'b10:
@@ -78,13 +78,13 @@ always @(*) begin
 				OP_ADD:
 					case(counter)
 						2'b01: begin
-							Rout = Rx;	 // Bus <- Rx
-							Ain  = 1'b1; // A   <- Bus
+							Rout = (8'b1 << Rx);	 // Bus <- Rx
+							Ain  = 1'b1; 			 // A   <- Bus
 						end
 						2'b10: begin		
-							Rout   = y;	 		// Bus <- Ry
-							alu_op = ALU_ADD; // A + Bus
-							Gin	 = 1'b1;		// G <- A + Bus
+							Rout   = (8'b1 << y); // Bus <- Ry
+							alu_op = ALU_ADD; 	 // A + Bus
+							Gin	 = 1'b1;			 // G <- A + Bus
 						end
 						2'b11: begin		
 							Gout = 1'b1;			// Bus <- G
@@ -97,13 +97,13 @@ always @(*) begin
 				OP_SUB:
 					case(counter)
 						2'b01: begin
-							Rout = Rx;	 // Bus <- Rx
-							Ain  = 1'b1; // A   <- Bus
+							Rout = (8'b1 << Rx);	 // Bus <- Rx
+							Ain  = 1'b1; 			 // A   <- Bus
 						end
 						2'b10: begin		
-							Rout   = y;	 		// Bus <- Ry
-							alu_op = ALU_SUB; // A - Bus
-							Gin	 = 1'b1;		// G <- A - Bus
+							Rout   = (8'b1 << y); // Bus <- Ry
+							alu_op = ALU_SUB; 	 // A - Bus
+							Gin	 = 1'b1;			 // G <- A - Bus
 						end
 						2'b11: begin		
 							Gout = 1'b1;			// Bus <- G
