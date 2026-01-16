@@ -15,8 +15,8 @@ initial begin
 end
 
 initial begin
-	$display("clk | load | vecin | vecout");
-	$monitor("%b %b %b %b", clk, load, vecin, vecout);
+	$display("clk | load |      vecin          |     vecout");
+	$monitor(" %b  |   %b  |   %b  |  %b", clk, load, vecin, vecout);
 end
 
 // stimulus
