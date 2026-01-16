@@ -5,14 +5,14 @@ module control_unit(run, resetn, IR, counter, clear, IRin,
 input  run, resetn;
 input  [1:0] counter;
 input  [8:0] IR;
-output [2:0] Rout;
+output [7:0] Rout;
 output [7:0] Rin;
 output clear, IRin, DINout, Gout, Gin, Ain, done;
 output [1:0] alu_op;
 
 reg Ain, Gin, Gout, clear, done, IRin, DINout;
 reg [7:0] Rin;
-reg [2:0] Rout;
+reg [7:0] Rout;
 reg [1:0] alu_op;
 
 // ALU ops
