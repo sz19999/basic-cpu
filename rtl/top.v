@@ -1,19 +1,30 @@
 // top module
 
-module top(clk, Din, run, resetn, done, bus);
+module top(clk, Din, run, resetn, done);
 
-wire clear, counter;
-wire IRin, IR;
-wire [7:0] Rout;
-wire DINout, Gout,
+parameter word = 16;
 
+input [word-1:0] Din;
+input clk, run, resetn;
+output done;
 
+wire clear;
+wire IRin, Ain, Gin;
+wire DINout, Gout;
+wire [7:0] Rout, Rin;
+wire [word-1:0] bus ,R_0, R_1, R_2, R_3, R_4, R_5, R_6, R_7, G_to_mux, alu_to_G, A_to_alu;
+wire [8:0] IR;
+wire [1:0] alu_op;
+wire [1:0] counter;
+
+// counter
 counter counter1 (
 	.clk(clk),
 	.clear(clear),
 	.count(counter) 
 );
 
+// control unit
 control_unit control_unit1 (
     .run(run),
 	 .resetn(resetn),
@@ -24,98 +35,106 @@ control_unit control_unit1 (
 	 .DINout(DINout),
 	 .Rout(Rout),
 	 .Gout(Gout),
-	 .Rin(),
-	 .Gin(),
-	 .Ain(),
-	 .alu_op(), 
+	 .Rin(Rin),
+	 .Gin(Gin),
+	 .Ain(Ain),
+	 .alu_op(alu_op), 
 	 .done(done)
 );
 
+// mux
 mux4x16 mux1 (
 	.din(Din),
-	.registers_flat({G, R7, R6, ..., R0}),
+	.registers_flat({G_to_mux, R_7, R_6, R_5, R_4, R_3, R_2, R_1, R_0}),
 	.select({Rout, Gout, DINout}),
 	.bus(bus)
 );
 
+// ALU
+alu alu1 (
+	.alu_op(alu_op),
+	.A(A_to_alu),
+	.bus(bus),
+	.G(alu_to_G)
+);
 
 // registers
-register IR1 (
+reg16 IR1 (
 	.clk(clk),
 	.load(IRin),
 	.vecin(Din[8:0]),
 	.vecout(IR)
 );
 
-register R0 (
+reg16 R0 (
 	.clk(clk),
-	.load(),
-	.vecin(),
-	.vecout()
+	.load(Rin[0]),
+	.vecin(bus),
+	.vecout(R_0)
 );
 
-register R1 (
+reg16 R1 (
 	.clk(clk),
-	.load(),
-	.vecin(),
-	.vecout()
+	.load(Rin[1]),
+	.vecin(bus),
+	.vecout(R_1)
 );
 
-register R2 (
+reg16 R2 (
 	.clk(clk),
-	.load(),
-	.vecin(),
-	.vecout()
+	.load(Rin[2]),
+	.vecin(bus),
+	.vecout(R_2)
 );
 
-register R3 (
+reg16 R3 (
 	.clk(clk),
-	.load(),
-	.vecin(),
-	.vecout()
+	.load(Rin[3]),
+	.vecin(bus),
+	.vecout(R_3)
 );
 
-register R4 (
+reg16 R4 (
 	.clk(clk),
-	.load(),
-	.vecin(),
-	.vecout()
+	.load(Rin[4]),
+	.vecin(bus),
+	.vecout(R_4)
 );
 
-register R5 (
+reg16 R5 (
 	.clk(clk),
-	.load(),
-	.vecin(),
-	.vecout()
+	.load(Rin[5]),
+	.vecin(bus),
+	.vecout(R_5)
 );
 
-register R6 (
+reg16 R6 (
 	.clk(clk),
-	.load(),
-	.vecin(),
-	.vecout()
+	.load(Rin[6]),
+	.vecin(bus),
+	.vecout(R_6)
 );
 
-register R7 (
+reg16 R7 (
 	.clk(clk),
-	.load(),
-	.vecin(),
-	.vecout()
+	.load(Rin[7]),
+	.vecin(bus),
+	.vecout(R_7)
 );
 
 
-register A (
+reg16 A (
 	.clk(clk),
-	.load(),
-	.vecin(),
-	.vecout()
+	.load(Ain),
+	.vecin(bus),
+	.vecout(A_to_alu)
 );
 
-register G (
+reg16 G (
 	.clk(clk),
-	.load(),
-	.vecin(),
-	.vecout()
+	.load(Gin),
+	.vecin(alu_to_G),
+	.vecout(G_to_mux)
 );
 
 endmodule
