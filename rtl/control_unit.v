@@ -42,7 +42,7 @@ always @(*) begin
 	Gout   = 1'b0;
 	IRin   = 1'b0;
 	DINout = 1'b0;
-	clear  = 1'b0;
+	clear  = 1'b0;	// set to 1???
 	done   = 1'b0;
 	alu_op = ALU_NOP;
 	
