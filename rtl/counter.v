@@ -9,7 +9,7 @@ output [N-1:0] count;
 
 reg [N-1:0] count;
 
-always @(posedge clk or posedge clear)
+always @(posedge clk)
 	if (clear)
 		count <= {N{1'b0}};
 	else
