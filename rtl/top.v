@@ -1,21 +1,28 @@
 // top module
 
-module top(clk, Din, run, resetn, done);
+module top(clk, Din, run, resetn, done, bus_out, registers);
 
 parameter word = 16;
+parameter r = 8;
 
 input [word-1:0] Din;
 input clk, run, resetn;
 output done;
+output [word-1:0] bus_out;
+output [word*r-1:0] registers;	// [R7, ..., R0]
 
 wire clear;
 wire IRin, Ain, Gin;
 wire DINout, Gout;
 wire [7:0] Rout, Rin;
-wire [word-1:0] bus ,R_0, R_1, R_2, R_3, R_4, R_5, R_6, R_7, G_to_mux, alu_to_G, A_to_alu;
-wire [8:0] IR;
+wire [word-1:0] IR, bus ,R_0, R_1, R_2, R_3, R_4, R_5, R_6, R_7, G_to_mux, alu_to_G, A_to_alu;
+//wire [8:0] IR;
 wire [1:0] alu_op;
 wire [1:0] counter;
+
+assign registers = {R_7, R_6, R_5, R_4, R_3, R_2, R_1, R_0},
+		 bus_out = bus;
+		 
 
 // counter
 counter counter1 (
@@ -28,7 +35,7 @@ counter counter1 (
 control_unit control_unit1 (
     .run(run),
 	 .resetn(resetn),
-	 .IR(IR),
+	 .IR(IR[8:0]),
 	 .counter(counter),
 	 .clear(clear),
 	 .IRin(IRin),
@@ -45,7 +52,7 @@ control_unit control_unit1 (
 // mux
 mux4x16 mux1 (
 	.din(Din),
-	.registers_flat({G_to_mux, R_7, R_6, R_5, R_4, R_3, R_2, R_1, R_0}),
+	.registers({G_to_mux, R_7, R_6, R_5, R_4, R_3, R_2, R_1, R_0}),
 	.select({Rout, Gout, DINout}),
 	.bus(bus)
 );
@@ -62,7 +69,7 @@ alu alu1 (
 reg16 IR1 (
 	.clk(clk),
 	.load(IRin),
-	.vecin(Din[8:0]),
+	.vecin(Din),
 	.vecout(IR)
 );
 
