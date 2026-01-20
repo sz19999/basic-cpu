@@ -23,7 +23,7 @@ always @(*) begin
 			G = A - bus;
 		default:
 			// NOP is included here
-			G = {word{1'b0}};
+			G = A; // do nothing
 	endcase
 end
 
