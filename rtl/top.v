@@ -1,6 +1,6 @@
 // top module
 
-module top(clk, Din, run, resetn, done, bus_out, registers);
+module top(clk, Din, run, resetn, done, bus_out, registers, counter_out);
 
 parameter word = 16;
 parameter r = 8;
@@ -10,20 +10,22 @@ input clk, run, resetn;
 output done;
 output [word-1:0] bus_out;
 output [word*r-1:0] registers;	// [R7, ..., R0]
+output [1:0] counter_out;
 
 wire clear;
 wire IRin, Ain, Gin;
 wire DINout, Gout;
 wire [7:0] Rout, Rin;
 wire [word-1:0] IR, bus ,R_0, R_1, R_2, R_3, R_4, R_5, R_6, R_7, G_to_mux, alu_to_G, A_to_alu;
-//wire [8:0] IR;
+wire [8:0] IR_to_control;
 wire [1:0] alu_op;
 wire [1:0] counter;
 
 assign registers = {R_7, R_6, R_5, R_4, R_3, R_2, R_1, R_0},
-		 bus_out = bus;
+		 bus_out = bus,
+		 IR_to_control = IR[8:0],
+		 counter_out = counter;
 		 
-
 // counter
 counter counter1 (
 	.clk(clk),
@@ -35,7 +37,7 @@ counter counter1 (
 control_unit control_unit1 (
     .run(run),
 	 .resetn(resetn),
-	 .IR(IR[8:0]),
+	 .IR(IR_to_control),
 	 .counter(counter),
 	 .clear(clear),
 	 .IRin(IRin),
