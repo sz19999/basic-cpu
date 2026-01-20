@@ -13,6 +13,6 @@ always @(posedge clk or posedge clear)
 	if (clear)
 		count <= {N{1'b0}};
 	else
-		count = count + 1;
+		count <= count + 1;
 
 endmodule
