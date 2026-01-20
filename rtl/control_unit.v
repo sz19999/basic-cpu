@@ -42,11 +42,14 @@ always @(*) begin
 	Gout   = 1'b0;
 	IRin   = 1'b0;
 	DINout = 1'b0;
-	clear  = 1'b0;	// set to 1???
+	clear  = 1'b0;
 	done   = 1'b0;
 	alu_op = ALU_NOP;
 	
-	if(run && resetn)
+	if (!resetn) begin
+		clear = 1;	// reset counter
+	end
+	else if (run && resetn)
 		// fetch
 		if (counter == 2'b00)
 			IRin   = 1'b1;  // IR  <- Din
