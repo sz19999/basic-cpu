@@ -9,7 +9,7 @@ The processor is written in Verilog HDL and consists of the following sub-units 
 
 - Arithmetic Logic Unit (ALU)  
 - Sequence Counter  
-- Register File  
+- Registers 
 - Multiplexer  
 - Control Unit  
 
